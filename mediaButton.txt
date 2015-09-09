@@ -1,0 +1,66 @@
+var mediaButton = function(name, url, href, className){
+    this.name = name;
+    this.className = className || name;
+    this.element = 'a';
+    this.href = href || window.location.href;
+    this.title = "Check this out: ";
+    this.url = '';
+    
+    if( url === '' || url === null || url === undefined ) { // USE DEFAULT
+        this.url = this._default_url(name);
+    }
+};
+
+mediaButton.prototype = {
+    constructor: mediaButton,
+    render: function(){
+        this.rendered = '<'+this.element+" href='"+this.url+encodeURIComponent( this.title + this.href )+"' class='"+this.className+ " "+this.name+"' data-link='"+encodeURIComponent(this.title + " - " +this.href+"'");
+        return this;
+    },
+    get:function(){
+        if(this.rendered === undefined)
+            return false;
+        return this.rendered;
+    },
+    wrap: function(wrapper){
+        if(!wrapper) {
+            console.log('need an element');
+            return false;
+        }
+        if(this.rendered === undefined){
+            console.log('need to render first');
+            return false;
+        }
+        this.rendered = '<'+wrapper+">"+this.rendered+"</"+wrapper+">";
+        return this;
+    },
+    set_url: function(url){
+        this.url = url;
+        return this;
+    },
+    set_href: function(href){
+        this.href = href;
+        return this;
+    },
+    set_class: function(classname){
+        this.className = classname;
+        return this;
+    },
+    set_title: function(title){
+        this.title = title;
+        return this;
+    },
+    _default_url :function(name){
+        var url = '';
+        switch(name)
+        {
+            case 'whatsapp': 
+                url = "whatsapp://send?text=";
+                break;
+            case 'viber': 
+                url = "viber://forward?text=";
+                break;
+        }
+        return url;
+    }
+};
